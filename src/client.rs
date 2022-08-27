@@ -3,14 +3,50 @@ const DEFAULT_BASE_URL: &str = "https://api.getlago.com";
 const DEFAULT_CONTENT_TYPE: &str = "application/json";
 const ENV_LAGO_API_URI: &str = "LAGO_BASE_URI";
 
-use crate::{ClientRequest, LagoApiKey};
+use crate::LagoApiKey;
 use log::{debug, info};
-
 use hyper::client::HttpConnector;
-use hyper::{Body, Response};
+use hyper::{Body, Method, Response};
 use hyper_tls::HttpsConnector;
+use std::collections::HashMap;
 
 pub type LagoResult<T> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
+
+
+
+pub type QueryParams = HashMap<String, String>;
+
+/// Request abstraction for http client
+#[derive(Debug)]
+pub struct ClientRequest {
+    pub method: Method,
+    pub path: String,
+    pub query_params: Option<QueryParams>,
+    pub body: Body,
+}
+
+impl ClientRequest {
+    pub fn new(method: Method, path: &str) -> Self {
+        Self {
+            method,
+            path: path.to_owned(),
+            query_params: None,
+            body: Body::empty(),
+        }
+    }
+
+    pub fn with_body(mut self, body: Body) -> Self {
+        self.body = body;
+
+        self
+    }
+
+    pub fn with_query(mut self, query: QueryParams) -> Self {
+        self.query_params = Some(query);
+
+        self
+    }
+}
 
 /// Lago Http Client
 ///
