@@ -1,4 +1,4 @@
-use lago_rust_client::{Client, SubscriptionClient};
+use lago_rust_client::{Client, SubscriptionRequest};
 use log::{debug, info};
 
 extern crate pretty_env_logger;
@@ -10,7 +10,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     info!("creating client");
     let lago = Client::new()?;
 
-    let client = SubscriptionClient::new(&lago)?;
+    let client = SubscriptionRequest::new(&lago)?;
 
     let response = client.get_all("123456").await?;
 

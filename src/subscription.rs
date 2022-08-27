@@ -61,11 +61,11 @@ pub struct Subscription {
     created_at: Option<DateTime<Utc>>,
 }
 
-pub struct SubscriptionClient {
+pub struct SubscriptionRequest {
     client: Client,
 }
 
-impl SubscriptionClient {
+impl SubscriptionRequest {
     pub fn new(client: &Client) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         Ok(Self {
             client: client.clone(),
