@@ -73,10 +73,7 @@ impl SubscriptionRequest {
     }
 
     /// Get all customer subscriptions
-    pub async fn get_all(
-        self,
-        customer_id: &str,
-    ) -> LagoResult<Subscriptions> {
+    pub async fn get_all(self, customer_id: &str) -> LagoResult<Subscriptions> {
         info!("requesting subscriptions for customer {}", customer_id);
         let body = serde_json::to_string(&SubscriptionInput::new(customer_id))?;
         let request = ClientRequest::new(Method::GET, SUBSCRIPTION_API_PATH).with_body(body.into());
@@ -92,10 +89,7 @@ impl SubscriptionRequest {
         Ok(subscriptions)
     }
 
-    pub async fn terminate(
-        self,
-        customer_id: &str,
-    ) -> LagoResult<Subscription> {
+    pub async fn terminate(self, customer_id: &str) -> LagoResult<Subscription> {
         let body = serde_json::to_string(&SubscriptionInput::new(customer_id))?;
         let request =
             ClientRequest::new(Method::DELETE, SUBSCRIPTION_API_PATH).with_body(body.into());
