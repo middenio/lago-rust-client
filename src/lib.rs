@@ -25,6 +25,9 @@ pub use self::customer::*;
 mod error;
 pub use self::error::*;
 
+mod event;
+pub use self::event::*;
+
 mod subscription;
 pub use self::subscription::*;
 
