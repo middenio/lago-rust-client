@@ -1,10 +1,10 @@
-use crate::{Client, ClientRequest};
+use crate::{Client, ClientRequest, LagoResult};
 use chrono::{DateTime, Utc};
 use hyper::body::Buf;
 use hyper::Method;
 use log::{debug, info};
 use serde::{Deserialize, Serialize};
-use std::io::{Read};
+use std::io::Read;
 use uuid::Uuid;
 
 const SUBSCRIPTION_API_PATH: &str = "subscriptions";
@@ -66,7 +66,7 @@ pub struct SubscriptionRequest {
 }
 
 impl SubscriptionRequest {
-    pub fn new(client: &Client) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
+    pub fn new(client: &Client) -> LagoResult<Self> {
         Ok(Self {
             client: client.clone(),
         })
@@ -76,7 +76,7 @@ impl SubscriptionRequest {
     pub async fn get_all(
         self,
         customer_id: &str,
-    ) -> Result<Subscriptions, Box<dyn std::error::Error + Send + Sync>> {
+    ) -> LagoResult<Subscriptions> {
         info!("requesting subscriptions for customer {}", customer_id);
         let body = serde_json::to_string(&SubscriptionInput::new(customer_id))?;
         let request = ClientRequest::new(Method::GET, SUBSCRIPTION_API_PATH).with_body(body.into());
@@ -95,7 +95,7 @@ impl SubscriptionRequest {
     pub async fn terminate(
         self,
         customer_id: &str,
-    ) -> Result<Subscription, Box<dyn std::error::Error + Send + Sync>> {
+    ) -> LagoResult<Subscription> {
         let body = serde_json::to_string(&SubscriptionInput::new(customer_id))?;
         let request =
             ClientRequest::new(Method::DELETE, SUBSCRIPTION_API_PATH).with_body(body.into());

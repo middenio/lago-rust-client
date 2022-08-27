@@ -10,10 +10,12 @@ use hyper::client::HttpConnector;
 use hyper::{Body, Response};
 use hyper_tls::HttpsConnector;
 
+pub type LagoResult<T> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
+
 /// Lago Http Client
-/// 
+///
 /// ```rust
-/// 
+///
 /// ```
 #[derive(Clone)]
 pub struct Client {
@@ -24,16 +26,16 @@ pub struct Client {
 
 impl Client {
     /// Create a new client with defaults
-    pub fn new() -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
+    pub fn new() -> LagoResult<Self> {
         let api_key = LagoApiKey::from_env()?;
         let base_uri = std::env::var(ENV_LAGO_API_URI).unwrap_or(DEFAULT_BASE_URL.to_owned());
         info!("setting lago api base uri to {}", base_uri);
         let https = HttpsConnector::new();
-    
+
         Ok(Self {
             api_key: api_key,
             base_uri: format!("{}{}", base_uri, DEFAULT_API_PATH),
-            client: hyper::Client::builder().build::<_, hyper::Body>(https),                
+            client: hyper::Client::builder().build::<_, hyper::Body>(https),
         })
     }
 
@@ -63,14 +65,11 @@ impl Client {
 
     /// Execute the `ClientRequest` against the requested lago api
     /// client.
-    /// 
+    ///
     /// ```rust
-    /// 
+    ///
     /// ```
-    pub async fn send(
-        self,
-        req: ClientRequest,
-    ) -> Result<Response<Body>, Box<dyn std::error::Error + Send + Sync>> {
+    pub async fn send(self, req: ClientRequest) -> LagoResult<Response<Body>> {
         let request = hyper::Request::builder()
             .method(req.method)
             .uri(format!("{}{}", self.base_uri, req.path))
@@ -79,8 +78,12 @@ impl Client {
             .body(req.body)?;
 
         let response = self.client.request(request).await?;
-        
-        debug!("request to {} received status {}", req.path, response.status());
+
+        debug!(
+            "request to {} received status {}",
+            req.path,
+            response.status()
+        );
 
         Ok(response)
     }
