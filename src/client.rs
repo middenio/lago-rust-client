@@ -4,15 +4,13 @@ const DEFAULT_CONTENT_TYPE: &str = "application/json";
 const ENV_LAGO_API_URI: &str = "LAGO_BASE_URI";
 
 use crate::LagoApiKey;
-use log::{debug, info};
 use hyper::client::HttpConnector;
 use hyper::{Body, Method, Response};
 use hyper_tls::HttpsConnector;
+use log::{debug, info};
 use std::collections::HashMap;
 
 pub type LagoResult<T> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
-
-
 
 pub type QueryParams = HashMap<String, String>;
 
