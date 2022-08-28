@@ -9,6 +9,14 @@ use uuid::Uuid;
 
 const SUBSCRIPTION_API_PATH: &str = "subscriptions";
 
+///
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum BillingTime {
+    Anniversary,
+    Calendar,
+}
+
 /// Subscription Status
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -21,15 +29,20 @@ pub enum SubscriptionStatus {
 
 #[derive(Deserialize, Serialize)]
 pub struct SubscriptionInput {
-    customer_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    customer_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     plan_code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    billing_time: Option<BillingTime>,
 }
 
 impl SubscriptionInput {
     pub fn new(customer_id: &str) -> Self {
         Self {
-            customer_id: customer_id.to_owned(),
+            customer_id: Some(customer_id.to_owned()),
             plan_code: None,
+            billing_time: None,
         }
     }
 
@@ -55,6 +68,7 @@ pub struct Subscription {
     unique_id: Uuid,
     plan_code: String,
     status: SubscriptionStatus,
+    billing_time: BillingTime,
     started_at: DateTime<Utc>,
     terminated_at: Option<DateTime<Utc>>,
     canceled_at: Option<DateTime<Utc>>,
