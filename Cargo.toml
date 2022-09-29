@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "lago-cli",
+    "lago-rust-client",
+]
