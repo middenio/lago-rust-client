@@ -1,3 +1,10 @@
+// ============================================================
+// Copyright (C) 2022 - Midden - All Rights Reserved
+// ============================================================
+//
+// Maintainer: John White <john@midden.io>
+// ============================================================
+
 const DEFAULT_API_PATH: &str = "/api/v1/";
 const DEFAULT_BASE_URL: &str = "https://api.getlago.com";
 const DEFAULT_CONTENT_TYPE: &str = "application/json";
@@ -75,7 +82,8 @@ impl Client {
     /// Create a new client with defaults
     pub fn new() -> LagoResult<Self> {
         let api_key = LagoApiKey::from_env()?;
-        let base_uri = std::env::var(ENV_LAGO_API_URI).unwrap_or_else(|_| DEFAULT_BASE_URL.to_owned());
+        let base_uri =
+            std::env::var(ENV_LAGO_API_URI).unwrap_or_else(|_| DEFAULT_BASE_URL.to_owned());
         info!("setting lago api base uri to {}", base_uri);
         let https = HttpsConnector::new();
 

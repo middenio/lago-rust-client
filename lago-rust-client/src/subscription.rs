@@ -1,3 +1,10 @@
+// ============================================================
+// Copyright (C) 2022 - Midden - All Rights Reserved
+// ============================================================
+//
+// Maintainer: John White <john@midden.io>
+// ============================================================
+
 use crate::{Client, ClientRequest, LagoResult};
 use chrono::{DateTime, NaiveDate, Utc};
 use hyper::body::Buf;

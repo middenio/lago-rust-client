@@ -1,3 +1,10 @@
+// ============================================================
+// Copyright (C) 2022 - Midden - All Rights Reserved
+// ============================================================
+//
+// Maintainer: John White <john@midden.io>
+// ============================================================
+
 use lago_rust_client::{Client, SubscriptionRequest};
 use log::{debug, info};
 

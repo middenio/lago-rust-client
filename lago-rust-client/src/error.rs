@@ -1,3 +1,10 @@
+// ============================================================
+// Copyright (C) 2022 - Midden - All Rights Reserved
+// ============================================================
+//
+// Maintainer: John White <john@midden.io>
+// ============================================================
+
 use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 use std::fmt;

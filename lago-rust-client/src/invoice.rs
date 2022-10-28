@@ -1,3 +1,10 @@
+// ============================================================
+// Copyright (C) 2022 - Midden - All Rights Reserved
+// ============================================================
+//
+// Maintainer: John White <john@midden.io>
+// ============================================================
+
 use crate::{Currency, Subscription, WebhookMessageType, WebhookObjectType};
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
